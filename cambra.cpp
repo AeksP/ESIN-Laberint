@@ -1,13 +1,29 @@
 #include "cambra.hpp"
- #include <iostream>
- using namepsace std;
+#include <iostream>
+using namespace std;
  
-explicit cambra::cambra(bool n=false, bool s=false, bool e=false, bool o=false){
-  cout<<"test"<<endl;
+explicit cambra::cambra(bool n=false, bool s=false, bool e=false, bool o=false) throw(error){
+  _n = n;
+  _e = e;
+  _s = s;
+  _o = o;
+  //casting
   //explicit = Si tienes cambra c2(true,true)
   //Tendrás una cambra con n=true, s=true, e=false, o=false
   
   //Meter metodo privado para guardar si la puerta está abierta o no?
+}
+
+cambra::cambra(const cambra & c){
+  *this = c;
+}
+
+cambra& cambra::operator=(const cambra & c){
+  //return this(c);//MIRAR VERY IMPORTANT
+  _n = c._n;
+  _e = c._e;
+  _s = c._s;
+  _o = c._o;
 }
 
 cambra::~cambra(){
@@ -27,5 +43,42 @@ void cambra::obre_porta(paret p){
 	if(p == paret::NORD){	//Mejor esto que p == 0
 		//if(_n == 1) cout<<"La puerta ya está abierta."  //No sé si hace falta
 		_n = 1;
-	}
+	}else if(p == paret::EST){
+    _e = 1;
+  }else if(p == paret::SUD){
+    _s = 1;
+  }else if(p == paret::OEST){
+    _o = 1;
+  }
+}
+
+void cambra::tanca_porta(paret p){
+  if(p == paret::NORD){
+		_n = 0;
+	}else if(p == paret::EST){
+    _e = 0;
+  }else if(p == paret::SUD){
+    _s = 0;
+  }else if(p == paret::OEST){
+    _o = 0;
+  }  
+}
+
+bool cambra::operator==(const cambra & c) const{
+  if(_n == c._n and _e == c._e and _s == c._s and _o == c._o) return true;
+  else return false;
+}
+bool cambra::operator!=(const cambra & c) const{
+  return not (*this==c);
+}
+
+bool cambra::operator<(const cambra & c) const{
+  if((_n + _e + _s + _o) == (c._n + c._e + c._s + c._o)){
+    if(_n < c._n)  return true;
+    else if(_e < c._e)  return true;
+    else if(_s < c._s)  return true;
+    else if(_o < c._o)  return true;
+  }
+  else if((_n + _e + _s + _o) < (c._n + c._e + c._s + c._o)) return true;
+  else return false;
 }
