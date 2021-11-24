@@ -8,10 +8,6 @@ cambra::cambra(bool n, bool s, bool e, bool o) throw(error){
   _s = s;
   _o = o;
   //casting
-  //explicit = Si tienes cambra c2(true,true)
-  //Tendrás una cambra con n=true, s=true, e=false, o=false
-  
-  //Meter metodo privado para guardar si la puerta está abierta o no?
 }
 
 cambra::cambra(const cambra & c) throw(error){
@@ -31,7 +27,6 @@ cambra::~cambra() throw(){
 }
 
 bool cambra::porta_oberta(paret p) const throw(){
-	//Usar metodos privados que guardan puerta abierta aqui? (Sería _n, _s etc)
 	if(p == paret::NORD)	return _n;
 	else if(p == paret::EST)	return _e;
 	else if(p == paret::SUD)	return _s;
