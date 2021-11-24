@@ -10,8 +10,7 @@ class cambra {
 public:
 
   // Construeix una cambra amb les portes als llocs indicats.
-  explicit cambra(bool n=false, bool s=false,
-                  bool e=false, bool o=false) throw(error);
+  explicit cambra(bool n=false, bool s=false, bool e=false, bool o=false) throw(error);
 
   // Constructora per còpia, assignació i destructora.
   cambra(const cambra & c) throw(error);
