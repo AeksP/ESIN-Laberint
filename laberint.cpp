@@ -4,10 +4,16 @@
 #include <string>
 using namespace std;
 
-cambra _mathlab[1000][1000];	//??????????????????????????????
-
 laberint::laberint(nat num_fil, nat num_col) throw(error){
-
+	//COST CUADRATIC
+	cambra c;
+	for(nat i = 0; i < num_fil; ++i){
+		for(nat j = 0; j < num_col; ++i){
+			_mathlab[i][j] = c;
+		}
+	}
+	_fila = num_fil;
+	_columna = num_col;
 }
 
 laberint::laberint(std::istream & is) throw(error){
@@ -35,10 +41,19 @@ laberint::laberint(std::istream & is) throw(error){
 }
 
 laberint::laberint(const laberint & l) throw(error){
-  
+		//COST: CUADRATIC
+  *this = l;
 }
 laberint& laberint::operator=(const laberint & l) throw(error){
-return *this;	//solo es una prueba para compilarlo
+		//COST: CUADRATIC
+	for(nat i = 0; i < l._fila; ++i){
+		for(nat j = 0; j < l._columna; ++i){
+			_mathlab[i][j] = l._mathlab[i][j];
+		}
+	}
+	_fila = l._fila;
+	_columna = l._columna;
+	return *this;
 }
 laberint::~laberint() throw(){
 
@@ -52,97 +67,101 @@ nat laberint::num_columnes() const throw(){
 }
 
 cambra laberint::operator()(const posicio & pos) const throw(error){
-	/*if(pos.first < _fila and pos.second < _columna){
-		return _mathlab[pos.first][pos.second];
-		//*this[pos.first][pos.second]; ?¿
-	}else cout<<"Error, posició no inclosa al laberint"<<endl;
-	//Falta un return
-	*/
-	
-	if((pos.first >= _fila and pos.second >= _columna) or (pos.first < 0 and pos.second < 0)){
+	if(pos.first >= _fila and pos.second >= _columna){
 		cout<<"Error, posició no inclosa al laberint"<<endl;
+		throw error(laberint::PosicioInexistent);
 	}else return _mathlab[pos.first][pos.second];
-	//Falta un return 
 }
 
 void laberint::obre_porta(paret p, const posicio & pos) throw(error){
 	if(pos.first < _fila and pos.second < _columna){
 		if(p == paret::NORD){
-			if(pos.first == 0)	cout<<"ERROR, exterior norte"<<endl;
+			if(pos.first == 0){
+				cout<<"ERROR, exterior norte"<<endl;
+				throw error(PortaExterior);
+			}
 			else{
 				_mathlab[pos.first][pos.second].obre_porta(p);	//Abro norte
 				_mathlab[pos.first-1][pos.second].obre_porta(paret::SUD);	//Abro sud de arriba
 			}
 		}else if(p == paret::EST){
-			if(pos.second == _columna-1)	cout<<"ERROR, exterior este"<<endl;
+			if(pos.second == _columna-1){
+				cout<<"ERROR, exterior este"<<endl;
+				throw error(PortaExterior);
+			}
 			else{
 				_mathlab[pos.first][pos.second].obre_porta(p);	//Abro norte
 				_mathlab[pos.first][pos.second+1].obre_porta(paret::OEST);	//Abro oest de derecha
 			}
 		}else if(p == paret::SUD){
-			if(pos.first == _fila-1)	cout<<"ERROR, exterior sud"<<endl;
+			if(pos.first == _fila-1){
+				cout<<"ERROR, exterior sud"<<endl;
+				throw error(PortaExterior);
+			}
 			else{
 				_mathlab[pos.first][pos.second].obre_porta(p); //Abro sud
 				_mathlab[pos.first+1][pos.second].obre_porta(paret::NORD);	//Abro norte de abajo
 			}
-		}else{	//p == paret::OEST
-			if(pos.second == 0)	cout<<"ERROR, exterior oest"<<endl;
+		}else if(p == paret::OEST){	//p == paret::OEST
+			if(pos.second == 0){
+				cout<<"ERROR, exterior oest"<<endl;
+				throw error(PortaExterior);
+			}
 			else{
 				_mathlab[pos.first][pos.second].obre_porta(p);
 				_mathlab[pos.first][pos.second-1].obre_porta(paret::EST);
 			}
 		}
-	
-	/*
-		if(pos.second == 0 and p != paret::OEST){	
-			mathlab[pos.first][0].obre_porta(p);	//El [0] es pos.second deducido por el if
-		}	//no puedes usar mathlab[pos.first][0].obre_porta("OEST");
-		else if(pos.second == _columna-1 and p != paret::EST){
-			mathlab[pos.first][_columna-1].obre_porta(p);
-		}
-		else if(pos.first == 0 and p != paret::NORD){
-			mathlab[0][pos.second].obre_porta(p);
-		}
-		else if(pos.first == _fila-1 and p != paret::SUD){
-			mathlab[_fila-1][pos.second].obre_porta(p)
-		}
-		else{
-			mathlab[pos.first][pos.second].obre_porta(p)
-		}
-	*/
-	//Creo que lo no comentado está mejor que la idea comentada de aquí 
-	}else	cout<<"Error mida"<<endl;
+	}else{
+		cout<<"Error mida"<<endl;
+		throw error(laberint::PosicioInexistent);
+	}
 
 }
 
 void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
 	if(pos.first < _fila and pos.second < _columna){
 		if(p == paret::NORD){
-			if(pos.first == 0)	cout<<"ERROR, exterior norte (cerrar)"<<endl;
+			if(pos.first == 0){
+				cout<<"ERROR, exterior norte (cerrar)"<<endl;
+				throw error(PortaExterior);
+			}
 			else{
 				_mathlab[pos.first][pos.second].tanca_porta(p);	//Cierro norte
 				_mathlab[pos.first-1][pos.second].tanca_porta(paret::SUD);	//Cierro sud de arriba
 			}
 		}else if(p == paret::EST){
-			if(pos.second == _columna-1)	cout<<"ERROR, exterior este (cerrar)"<<endl;
+			if(pos.second == _columna-1){
+				cout<<"ERROR, exterior este (cerrar)"<<endl;
+				throw error(PortaExterior);
+			}
 			else{
 				_mathlab[pos.first][pos.second].tanca_porta(p);	//Cierro este
 				_mathlab[pos.first][pos.second+1].tanca_porta(paret::OEST);	//Cierro oest de derecha
 			}
 		}else if(p == paret::SUD){
-			if(pos.first == _fila-1)	cout<<"ERROR, exterior sud"<<endl;
+			if(pos.first == _fila-1){
+				cout<<"ERROR, exterior sud (cerrar)"<<endl;
+				throw error(PortaExterior);
+			}
 			else{
 				_mathlab[pos.first][pos.second].tanca_porta(p); //Cierro sud
 				_mathlab[pos.first+1][pos.second].tanca_porta(paret::NORD);	//Cierro norte de abajo
 			}
-		}else{	//p == paret::OEST
-			if(pos.second == 0)	cout<<"ERROR, exterior oest"<<endl;
+		}else if(p == paret::OEST){	//p == paret::OEST
+			if(pos.second == 0){
+				cout<<"ERROR, exterior oest (cerrar)"<<endl;
+				throw error(PortaExterior);
+			}
 			else{
 				_mathlab[pos.first][pos.second].tanca_porta(p);
 				_mathlab[pos.first][pos.second-1].tanca_porta(paret::EST);
 			}
 		}
-	}else	cout<<"Error mida"<<endl;
+	}else{
+		cout<<"Error mida (cerrar)"<<endl;
+		throw error(laberint::PosicioInexistent);
+	}
 }
 
 void laberint::print(std::ostream & os) const throw(){
