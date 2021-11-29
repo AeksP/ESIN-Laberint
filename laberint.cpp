@@ -5,10 +5,10 @@
 using namespace std;
 
 laberint::laberint(nat num_fil, nat num_col) throw(error){
-	//COST CUADRATIC
+	//COST N*M
 	cambra c;
 	for(nat i = 0; i < num_fil; ++i){
-		for(nat j = 0; j < num_col; ++i){
+		for(nat j = 0; j < num_col; ++j){
 			_mathlab[i][j] = c;
 		}
 	}
@@ -17,6 +17,8 @@ laberint::laberint(nat num_fil, nat num_col) throw(error){
 }
 
 laberint::laberint(std::istream & is) throw(error){
+	int n;
+	is>>n;
 	/*string s;
 	getline(is,s);  //Fila y columna
 	istringstream ss(s);
@@ -41,13 +43,13 @@ laberint::laberint(std::istream & is) throw(error){
 }
 
 laberint::laberint(const laberint & l) throw(error){
-		//COST: CUADRATIC
+		//COST N*M
   *this = l;
 }
 laberint& laberint::operator=(const laberint & l) throw(error){
-		//COST: CUADRATIC
+		//COST N*M
 	for(nat i = 0; i < l._fila; ++i){
-		for(nat j = 0; j < l._columna; ++i){
+		for(nat j = 0; j < l._columna; ++j){
 			_mathlab[i][j] = l._mathlab[i][j];
 		}
 	}
@@ -165,6 +167,72 @@ void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
 }
 
 void laberint::print(std::ostream & os) const throw(){
-
-  
+	//COST N*M
+	for(nat i = 0; i < _fila; ++i){
+		for(nat j = 0; j < _columna; ++j){
+			string s = "*";
+			os << '*' <<
+		}
+		cout<<string<<endl;
+	}
 }
+/*
+***** nnn
+* * * nnn
+***** ccc
+* * * ccc
+***** ccc
+* * *
+*****
+* * * sss
+***** sss
+*/
+
+
+/*for(nat i = 0; i < _fila; ++i){
+		for(nat j = 0; j < _columna; ++j){
+
+			if(j > 0 and boolsud == 0){
+				j--;
+				boolsud = 1;
+			}
+			//os << '*' << (_mathlab[i][j].porta_oberta(paret("nord")) ? ' ' : '*') << '*' << endl;
+			//os << (_mathlab[i][j].porta_oberta(paret("oest")) ? ' ' : '*') << ' ';
+			//os << (_mathlab[i][j].porta_oberta(paret("est")) ? ' ' : '*') << endl;
+			//os << '*' << (_mathlab[i][j].porta_oberta(paret("sud")) ? ' ' : '*') << '*';
+			if(j == 0 and i == 0){	//NO preguntas norte oeste
+				os << "**";	//NORTE
+				os << '*';	//OESTE
+				//PREGUNTO ESTE Y SUD
+			os << ' '<< (_mathlab[i][j].porta_oberta(paret("est")) ? ' ' : '*');
+			os << '*' << (_mathlab[i][j].porta_oberta(paret("sud")) ? ' ' : '*');
+			}
+			else if(i == 0){
+				os << '*';	//OESTE
+				//PreguntO ESTE Y SUD
+			}
+			else if(j == 0){ //Eres una cambra del techo
+				os << '*';	//NORTE
+				//PreguntO ESTE Y SUD
+			}
+			else if(j == _columna-1){
+				os<< "***";	//NORTE
+				os<<' '<<'*';
+				os<< (_mathlab[i][j].porta_oberta(paret("sud")) ? ' ' : '*') << '*';
+			}
+			//else{	//ESTOY EN UN LUGAR NO ESPEDCIAL
+			//	//PREGUNTO ESTE Y SUD
+			//	os<<""
+			//}
+		
+		
+			if(j == 0)	os <<'*';	//paret
+			os << ' '<< (_mathlab[i][j].porta_oberta(paret("est")) ? ' ' : '*');
+		
+			if(boolsud = 1){
+				boolsud = 0;
+				j++;
+			}
+		}
+		cout<<string<<endl;
+	}*/
