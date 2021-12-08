@@ -1,6 +1,6 @@
 //g++ -c laberint.cpp -Wno-deprecated
 #include "laberint.hpp"
-#include <sstream>
+//#include <sstream>
 #include <string>
 using namespace std;
 
@@ -17,29 +17,48 @@ laberint::laberint(nat num_fil, nat num_col) throw(error){
 }
 
 laberint::laberint(std::istream & is) throw(error){
-	int n;
-	is>>n;
-	/*string s;
-	getline(is,s);  //Fila y columna
-	istringstream ss(s);
+	//COST N*M
+	int fila;
+	int columna;
+	is>>fila;
+	is>>columna;
+	_columna = columna;
+	_fila = fila;
+	
+	string s;
+	int contx = 0, conty = 0;
+	//string ignoro;
+	getline(is,s);
 
-	ss >> _fila;
-	ss >> _columna;
+	for( nat i = 0; i < (_fila*2)-1; ++i){
+		getline(is,s);
+		contx = 0;
+		conty = 0;
+		for( nat j = 0; j < (_columna*2)+1; ++j ){
+			if(i%2 == 0){	//PAR, miro este
+				if(j != 0 and j%2 != 0 and (j != (_columna*2)+1) ){	//Si no es paret oeste ni es cambra ni es paret este
+					if(s[j] == ' '){
+						_mathlab[contx][conty].obre_porta(paret::EST);	//Abro este
+						_mathlab[contx][conty+1].obre_porta(paret::OEST);	//Abro oest
+					}
+					//++contx;
+					++conty;
+				}
+			}
+			else{	//IMPAR
+				if( j%2 != 0){	//Estamos en paret sud/norte
+					if(s[j] == ' '){
+						_mathlab[contx][conty].obre_porta(paret::SUD);	//Abro norte
+						_mathlab[contx+1][conty].obre_porta(paret::NORD);	//Abro sud
+					}
+					++conty;
+				}
+			}
+		}
 
-	matriu mathlab;
-
-	for(int i = 0; i < _fila+1; i++){
-	    int j = 0;
-	    getline(is,s);
-	    istringstream ss(s);
-	    // fila0: mathlab[i] **********
-	    char caracter;
-	    while(ss >> caracter){
-		mathlab[i][j].push_back(caracter);
-		++j;
-	    }
 	}
-	*/
+	getline(is,s);
+	cout<<"he acabado"<<endl;
 }
 
 laberint::laberint(const laberint & l) throw(error){
@@ -92,7 +111,7 @@ void laberint::obre_porta(paret p, const posicio & pos) throw(error){
 				throw error(PortaExterior);
 			}
 			else{
-				_mathlab[pos.first][pos.second].obre_porta(p);	//Abro norte
+				_mathlab[pos.first][pos.second].obre_porta(p);	//Abro este
 				_mathlab[pos.first][pos.second+1].obre_porta(paret::OEST);	//Abro oest de derecha
 			}
 		}else if(p == paret::SUD){
@@ -168,13 +187,31 @@ void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
 
 void laberint::print(std::ostream & os) const throw(){
 	//COST N*M
-	for(nat i = 0; i < _fila; ++i){
-		for(nat j = 0; j < _columna; ++j){
-			string s = "*";
-			os << '*' <<
-		}
-		cout<<string<<endl;
+	string s = "";
+	string pared = "";
+	for(nat i = 0; i < (_columna*2) +1; ++i){
+		pared += '*';
 	}
+	os<<pared<<endl;
+
+	for( nat i = 0; i < _fila; ++i ){
+		s = "";
+		for( nat j = 0; j < _columna; ++j ){
+			if( j == 0 )	os << '*';	//PARED OESTE, siempre fija
+			s += '*';	//Pared oeste y esquina de la linea de abajo
+			os << ' ';
+			s += (_mathlab[i][j].porta_oberta(paret("sud")) ? ' ' : '*');
+			if(j != _columna-1 )	os << (_mathlab[i][j].porta_oberta(paret("est")) ? ' ' : '*');
+			else{
+				os << '*';
+				s += '*';				
+			}
+		}
+		os<<endl;
+		if( i != _fila-1)	os<<s<<endl;
+	}
+
+	os<<pared<<endl;
 }
 /*
 ***** nnn
@@ -188,6 +225,17 @@ void laberint::print(std::ostream & os) const throw(){
 ***** sss
 */
 
+/*
+***********
+* * * * * *
+***********
+* * * * * *
+***********
+* * * * * *
+***********
+* * * * * *
+***********
+*/
 
 /*for(nat i = 0; i < _fila; ++i){
 		for(nat j = 0; j < _columna; ++j){
@@ -236,3 +284,4 @@ void laberint::print(std::ostream & os) const throw(){
 		}
 		cout<<string<<endl;
 	}*/
+	

@@ -2,3 +2,5 @@ nat _fila;
 nat _columna;
 static const int MAXSIZE = 1000;
 cambra _mathlab[MAXSIZE][MAXSIZE];
+
+//new y delete
