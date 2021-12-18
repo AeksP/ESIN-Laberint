@@ -28,45 +28,68 @@ laberint::laberint(std::istream & is) throw(error){
 	string s;
 	int contx = 0, conty = 0;
 	//string ignoro;
-	getline(is,s);
-
-	for( nat i = 0; i < (_fila*2)-1; ++i){
+	getline(is,s);	//Hay que dejarlo, es el salto de linea de los numeros
+	//cout<<"test"<<s<<endl;
+	for( nat i = 0; i < (_fila*2); ++i){	//(_fila*2)
 		getline(is,s);
-		contx = 0;
-		conty = 0;
-		for( nat j = 0; j < (_columna*2)+1; ++j ){
-			if(i%2 == 0){	//PAR, miro este
-				if(j != 0 and j%2 != 0 and (j != (_columna*2)+1) ){	//Si no es paret oeste ni es cambra ni es paret este
-					if(s[j] == ' '){
-						_mathlab[contx][conty].obre_porta(paret::EST);	//Abro este
-						_mathlab[contx][conty+1].obre_porta(paret::OEST);	//Abro oest
+		//cout<<"testdentro del for"<<s<<endl;
+		//contx = 0;	esto está mal
+		if(i != 0){
+			conty = 0;
+			for( nat j = 0; j < (_columna*2)+1; ++j ){
+				if(i%2 != 0){	// ***AHORA IM****PAR, miro este
+					if(j%2 == 0 and j != 0 and (j != (_columna*2)+1) ){	//Si no es paret oeste ni es cambra ni es paret este
+						if(s[j] == ' '){
+							//cout<<"jota:"<<j<<endl;
+							//cout<<"mi s es este:"<<s<<endl;
+							//cout<<"prueba:"<<s[j]<<"TT"<<endl;
+							//cout<<"aqui entra verdad?"<<endl;
+							_mathlab[contx][conty].obre_porta(paret::EST);	//Abro este
+							_mathlab[contx][conty+1].obre_porta(paret::OEST);	//Abro oest
+						}
+						//cout<<"X:"<<contx<<" + Y:"<<conty<<endl;
+						//++contx;
+						++conty;
 					}
-					//++contx;
-					++conty;
+				}
+				else{	// ****AHORA PAR**** IMPAR
+					//cout<<"aqui entra verdad?"<<endl;
+					if( j%2 != 0){	//Estamos en paret sud/norte
+						if(s[j] == ' '){
+							_mathlab[contx][conty].obre_porta(paret::SUD);	//Abro norte
+							_mathlab[contx+1][conty].obre_porta(paret::NORD);	//Abro sud
+						}
+						//cout<<"x:"<<contx<<" - y:"<<conty<<endl;
+						++conty;
+					}
 				}
 			}
-			else{	//IMPAR
-				if( j%2 != 0){	//Estamos en paret sud/norte
-					if(s[j] == ' '){
-						_mathlab[contx][conty].obre_porta(paret::SUD);	//Abro norte
-						_mathlab[contx+1][conty].obre_porta(paret::NORD);	//Abro sud
-					}
-					++conty;
-				}
-			}
+			if( i%2 == 0)	contx++;
 		}
-
 	}
-	getline(is,s);
+	//getline(is,s); sigue sin funcionar
 	cout<<"he acabado"<<endl;
 }
+//bst, hash, 
+//find ,union de les particions, el quick union es mejor (en vez de apuntar todos al delegado, se va creando un arbol)
+//bst tiene fesq, fdret y otro puntero para su delegado
+//hash lo mismo, tienen sus punteros y le añades uno extra a su delegado
 
+//dedalus, posicio: x*y = 1,2,3,4,5,...
 laberint::laberint(const laberint & l) throw(error){
 		//COST N*M
+		//cambiamos esto y lo ponemos al reves
   *this = l;
 }
 laberint& laberint::operator=(const laberint & l) throw(error){
 		//COST N*M
+		//l1 = l2;
+		//delete l1 i despues copias l2 en otro sitio temporal i haces return de ese?;
+		//aux(l2)
+		//l1 = aux;
+		//aux = l1;
+		//y al acabar se borra "aux" que has hecho que sea l1
+		//ha enseñado la implementacion de cua
 	for(nat i = 0; i < l._fila; ++i){
 		for(nat j = 0; j < l._columna; ++j){
 			_mathlab[i][j] = l._mathlab[i][j];

@@ -26,6 +26,21 @@ namespace check {
   bool comprova_perfecte(const laberint& L);
 };
 
+  bool check::comprova_cami_minim(const posicio& ini, 
+                           const posicio& final,
+                           const laberint& L,
+                           const list<posicio>& camino_candidato){
+                              int suma = ini.first + final.first;
+                              int colum = L.num_columnes();
+                              int testdddd = camino_candidato.front().first;
+                             return true;
+                           }
+
+bool check::comprova_perfecte(const laberint& L){
+  int dsdadad = L.num_columnes();
+  return true;
+}
+
 void update_dirs(const string& dir, bool& n, bool& s, bool& e, bool& o) {
   if (dir == "N" or dir == "nord" or dir == "NORD") {
     n = true;
