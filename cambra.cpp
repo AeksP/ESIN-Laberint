@@ -37,25 +37,25 @@ bool cambra::porta_oberta(paret p) const throw(){
 void cambra::obre_porta(paret p) throw(error){
 	if(p == paret::NORD){	//Mejor esto que p == 0
 		//if(_n == 1) cout<<"La puerta ya está abierta."  //No sé si hace falta
-		_n = 1;
+		_n = true;
 	}else if(p == paret::EST){
-    _e = 1;
+    _e = true;
   }else if(p == paret::SUD){
-    _s = 1;
+    _s = true;
   }else if(p == paret::OEST){
-    _o = 1;
+    _o = true;
   }
 }
 
 void cambra::tanca_porta(paret p) throw(error){
   if(p == paret::NORD){
-		_n = 0;
+		_n = false;
 	}else if(p == paret::EST){
-    _e = 0;
+    _e = false;
   }else if(p == paret::SUD){
-    _s = 0;
+    _s = false;
   }else if(p == paret::OEST){
-    _o = 0;
+    _o = false;
   }  
 }
 

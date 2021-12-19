@@ -26,6 +26,12 @@ laberint::laberint(std::istream & is) throw(error){
 	_fila = fila;
 	//_puntero[0][1].obre_porta(paret::EST);	//Abro este
 	//*this = laberint(fila,columna);
+
+	_puntero = new cambra*[_fila];	//Array de cambras
+	for(nat i = 0; i < _fila; ++i){	//Matriz de cambras
+		_puntero[i] = new cambra[_columna];
+	}
+
 	string s;
 	int contx = 0, conty = 0;
 	getline(is,s);	//Hay que dejarlo, es el salto de linea de los numeros
@@ -39,12 +45,14 @@ laberint::laberint(std::istream & is) throw(error){
 				if(i%2 != 0){	// AHORA IMPAR, miro este/oeste
 					if(j%2 == 0 and j != 0 and (j != (_columna*2)) ){	//Si no es paret oeste ni es cambra ni es paret este
 						if(s[j] == ' '){
-							cout<<"peto aqui y esta es mi jota:"<<j<<endl;
-							cout<<"Y abro la puerta en esta cambra:"<<contx<<","<<conty<<endl;
-							_puntero[contx][conty].obre_porta(paret::EST);	//Abro este
-							cout<<"Test."<<endl;
-							_puntero[contx][conty+1].obre_porta(paret::OEST);	//Abro oest
-							cout<<"aqui no llego"<<endl;
+							//cout<<"peto aqui y esta es mi jota:"<<j<<endl;
+							//cout<<"Y abro la puerta en esta cambra:"<<contx<<","<<conty<<endl;
+							//cout<<_puntero[contx]<<endl;
+							//cout<<_puntero<<endl;
+							obre_porta(paret::EST,posicio(contx,conty));	//Abro este
+							//cout<<"Test."<<endl;
+							//_puntero[contx][conty+1].obre_porta(paret::OEST);	//Abro oest
+							//cout<<"aqui no llego"<<endl;
 						}
 						++conty;
 					}
@@ -72,13 +80,20 @@ laberint::laberint(std::istream & is) throw(error){
 //dedalus, posicio: x*y = 1,2,3,4,5,...
 laberint::laberint(const laberint & l) throw(error){
 		//COST fila*columna
+
+	_fila = l._fila;
+	_columna = l._columna;
+
+	_puntero = new cambra*[_fila];	//Array de cambras
+	for(nat i = 0; i < _fila; ++i){	//Matriz de cambras
+		_puntero[i] = new cambra[_columna];
+	}
+
 	for(nat i = 0; i < l._fila; ++i){
 		for(nat j = 0; j < l._columna; ++j){
 			_puntero[i][j] = l._puntero[i][j];
 		}
 	}
-	_fila = l._fila;
-	_columna = l._columna;
 }
 laberint& laberint::operator=(const laberint & l) throw(error){
 		//COST 
@@ -86,11 +101,15 @@ laberint& laberint::operator=(const laberint & l) throw(error){
 			laberint laux(l);
 			cambra **paux = _puntero;
 			_puntero = laux._puntero;
-			laux._puntero = paux;
+			laux._puntero = paux;	//Se borra el _puntero original
+
+			_fila = laux._fila;
+			_columna = laux._columna;
 		}
 		return *this;
 }
 laberint::~laberint() throw(){
+	cout<<"aqui entra?"<<endl;
 	if(_puntero != NULL){	//Por si acaso?
 		for(nat i = 0; i < _fila; ++i){
 			delete [] _puntero[i];
@@ -157,7 +176,6 @@ void laberint::obre_porta(paret p, const posicio & pos) throw(error){
 		cout<<"Error mida"<<endl;
 		throw error(laberint::PosicioInexistent);
 	}
-
 }
 
 void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
