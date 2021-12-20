@@ -13,19 +13,18 @@ laberint::laberint(nat num_fil, nat num_col) throw(error){
 	}
 	_fila = num_fil;
 	_columna = num_col;
-	//cout<<"acaba?"<<endl;
 }
 
 laberint::laberint(std::istream & is) throw(error){
 	//COST N*M
 	nat fila;
 	nat columna;
+
 	is>>fila;
 	is>>columna;
+
 	_columna = columna;
 	_fila = fila;
-	//_puntero[0][1].obre_porta(paret::EST);	//Abro este
-	//*this = laberint(fila,columna);
 
 	_puntero = new cambra*[_fila];	//Array de cambras
 	for(nat i = 0; i < _fila; ++i){	//Matriz de cambras
@@ -41,18 +40,12 @@ laberint::laberint(std::istream & is) throw(error){
 		cout<<"testdentro"<<s<<endl;
 		if(i != 0){	//No hace nada pq es la pared
 			conty = 0;
-			for( nat j = 0; j < (_columna*2)+1; ++j ){
+			for( nat j = 0; j < (_columna*2)+1; ++j ){	//j = 1
 				if(i%2 != 0){	// AHORA IMPAR, miro este/oeste
 					if(j%2 == 0 and j != 0 and (j != (_columna*2)) ){	//Si no es paret oeste ni es cambra ni es paret este
 						if(s[j] == ' '){
-							//cout<<"peto aqui y esta es mi jota:"<<j<<endl;
-							//cout<<"Y abro la puerta en esta cambra:"<<contx<<","<<conty<<endl;
-							//cout<<_puntero[contx]<<endl;
-							//cout<<_puntero<<endl;
-							obre_porta(paret::EST,posicio(contx,conty));	//Abro este
-							//cout<<"Test."<<endl;
+							obre_porta(paret::EST,posicio(contx,conty));	//Abro este y oeste
 							//_puntero[contx][conty+1].obre_porta(paret::OEST);	//Abro oest
-							//cout<<"aqui no llego"<<endl;
 						}
 						++conty;
 					}
@@ -72,12 +65,7 @@ laberint::laberint(std::istream & is) throw(error){
 	}
 	cout<<"he acabado"<<endl;
 }
-//bst, hash, 
-//find ,union de les particions, el quick union es mejor (en vez de apuntar todos al delegado, se va creando un arbol)
-//bst tiene fesq, fdret y otro puntero para su delegado
-//hash lo mismo, tienen sus punteros y le añades uno extra a su delegado
 
-//dedalus, posicio: x*y = 1,2,3,4,5,...
 laberint::laberint(const laberint & l) throw(error){
 		//COST fila*columna
 
@@ -109,14 +97,14 @@ laberint& laberint::operator=(const laberint & l) throw(error){
 		return *this;
 }
 laberint::~laberint() throw(){
-	cout<<"aqui entra?"<<endl;
+	//cout<<"aqui entra?"<<endl;
 	if(_puntero != NULL){	//Por si acaso?
 		for(nat i = 0; i < _fila; ++i){
 			delete [] _puntero[i];
 		}
 		delete [] _puntero;
 	}
-	cout<<"he borrado"<<endl;
+	//cout<<"he borrado"<<endl;
 }
 
 nat laberint::num_files() const throw(){
@@ -251,75 +239,3 @@ void laberint::print(std::ostream & os) const throw(){
 
 	os<<pared<<endl;
 }
-/*
-***** nnn
-* * * nnn
-***** ccc
-* * * ccc
-***** ccc
-* * *
-*****
-* * * sss
-***** sss
-*/
-
-/*
-***********
-* * * * * *
-***********
-* * * * * *
-***********
-* * * * * *
-***********
-* * * * * *
-***********
-*/
-
-/*for(nat i = 0; i < _fila; ++i){
-		for(nat j = 0; j < _columna; ++j){
-
-			if(j > 0 and boolsud == 0){
-				j--;
-				boolsud = 1;
-			}
-			//os << '*' << (_mathlab[i][j].porta_oberta(paret("nord")) ? ' ' : '*') << '*' << endl;
-			//os << (_mathlab[i][j].porta_oberta(paret("oest")) ? ' ' : '*') << ' ';
-			//os << (_mathlab[i][j].porta_oberta(paret("est")) ? ' ' : '*') << endl;
-			//os << '*' << (_mathlab[i][j].porta_oberta(paret("sud")) ? ' ' : '*') << '*';
-			if(j == 0 and i == 0){	//NO preguntas norte oeste
-				os << "**";	//NORTE
-				os << '*';	//OESTE
-				//PREGUNTO ESTE Y SUD
-			os << ' '<< (_mathlab[i][j].porta_oberta(paret("est")) ? ' ' : '*');
-			os << '*' << (_mathlab[i][j].porta_oberta(paret("sud")) ? ' ' : '*');
-			}
-			else if(i == 0){
-				os << '*';	//OESTE
-				//PreguntO ESTE Y SUD
-			}
-			else if(j == 0){ //Eres una cambra del techo
-				os << '*';	//NORTE
-				//PreguntO ESTE Y SUD
-			}
-			else if(j == _columna-1){
-				os<< "***";	//NORTE
-				os<<' '<<'*';
-				os<< (_mathlab[i][j].porta_oberta(paret("sud")) ? ' ' : '*') << '*';
-			}
-			//else{	//ESTOY EN UN LUGAR NO ESPEDCIAL
-			//	//PREGUNTO ESTE Y SUD
-			//	os<<""
-			//}
-		
-		
-			if(j == 0)	os <<'*';	//paret
-			os << ' '<< (_mathlab[i][j].porta_oberta(paret("est")) ? ' ' : '*');
-		
-			if(boolsud = 1){
-				boolsud = 0;
-				j++;
-			}
-		}
-		cout<<string<<endl;
-	}*/
-	
