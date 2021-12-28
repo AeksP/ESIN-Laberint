@@ -1,12 +1,9 @@
-//g++ -c laberint.cpp -Wno-deprecated
+
 #include "laberint.hpp"
-//#include <sstream>
 #include <string>
 using namespace std;
 
 laberint::laberint(nat num_fil, nat num_col) throw(error){
-	//COST N*M
-	
 	_puntero = new cambra*[num_fil];	//Array de cambras
 	for(nat i = 0; i < num_fil; ++i){	//Matriz de cambras
 		_puntero[i] = new cambra[num_col];
@@ -16,7 +13,6 @@ laberint::laberint(nat num_fil, nat num_col) throw(error){
 }
 
 laberint::laberint(std::istream & is) throw(error){
-	//COST N*M
 	nat fila;
 	nat columna;
 
@@ -45,7 +41,6 @@ laberint::laberint(std::istream & is) throw(error){
 					if(j%2 == 0 and j != 0 and (j != (_columna*2)) ){	//Si no es paret oeste ni es cambra ni es paret este
 						if(s[j] == ' '){
 							obre_porta(paret::EST,posicio(contx,conty));	//Abro este y oeste
-							//_puntero[contx][conty+1].obre_porta(paret::OEST);	//Abro oest
 						}
 						++conty;
 					}
@@ -53,8 +48,7 @@ laberint::laberint(std::istream & is) throw(error){
 				else{	// AHORA PAR
 					if( j%2 != 0){	//Estamos en paret sud/norte
 						if(s[j] == ' '){
-							_puntero[contx][conty].obre_porta(paret::SUD);	//Abro norte
-							_puntero[contx+1][conty].obre_porta(paret::NORD);	//Abro sud
+							obre_porta(paret::SUD,posicio(contx,conty));	//Abro sud y norte
 						}
 						++conty;
 					}
@@ -63,12 +57,10 @@ laberint::laberint(std::istream & is) throw(error){
 			if( i%2 == 0)	contx++;
 		}
 	}
-	cout<<"he acabado"<<endl;
+	//cout<<"he acabado"<<endl;
 }
 
 laberint::laberint(const laberint & l) throw(error){
-		//COST fila*columna
-
 	_fila = l._fila;
 	_columna = l._columna;
 
@@ -84,7 +76,6 @@ laberint::laberint(const laberint & l) throw(error){
 	}
 }
 laberint& laberint::operator=(const laberint & l) throw(error){
-		//COST 
 		if(this != &l){
 			laberint laux(l);
 			cambra **paux = _puntero;
@@ -97,14 +88,12 @@ laberint& laberint::operator=(const laberint & l) throw(error){
 		return *this;
 }
 laberint::~laberint() throw(){
-	//cout<<"aqui entra?"<<endl;
 	if(_puntero != NULL){	//Por si acaso?
 		for(nat i = 0; i < _fila; ++i){
 			delete [] _puntero[i];
 		}
 		delete [] _puntero;
 	}
-	//cout<<"he borrado"<<endl;
 }
 
 nat laberint::num_files() const throw(){
@@ -212,7 +201,6 @@ void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
 }
 
 void laberint::print(std::ostream & os) const throw(){
-	//COST N*M
 	string s = "";
 	string pared = "";
 	for(nat i = 0; i < (_columna*2) +1; ++i){

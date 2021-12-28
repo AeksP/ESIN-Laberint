@@ -1,0 +1,16 @@
+struct node_hash{
+    int _k; //Clau
+    node_hash* _seg;
+    node_hash* _delegado;
+};
+node_hash** _taula; // taula amb punters a les llistes
+nat _M; // mida de la taula
+nat _quants;    // nº d'elements guardats al diccionari
+
+static long const MULT = 31415926;
+
+//Calcula un valor de dispersió entre 0 i LONG_MAX a partir de k
+static long h(int k);
+
+// Destrueix la llista de nodes apuntats per p
+static void esborra_nodes(node_hash *p);

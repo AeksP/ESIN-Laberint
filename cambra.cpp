@@ -7,7 +7,6 @@ cambra::cambra(bool n, bool s, bool e, bool o) throw(error){
   _e = e;
   _s = s;
   _o = o;
-  //casting
 }
 
 cambra::cambra(const cambra & c) throw(error){
@@ -15,7 +14,6 @@ cambra::cambra(const cambra & c) throw(error){
 }
 
 cambra& cambra::operator=(const cambra & c) throw(error){
-  //return this(c);//MIRAR VERY IMPORTANT
   _n = c._n;
   _e = c._e;
   _s = c._s;
@@ -31,12 +29,12 @@ bool cambra::porta_oberta(paret p) const throw(){
 	else if(p == paret::EST)	return _e;
 	else if(p == paret::SUD)	return _s;
 	else return _o; //
-	//Poner algo por si p == paret::NO_DIR?
+	//si p == paret::NO_DIR?
 }
 
 void cambra::obre_porta(paret p) throw(error){
-	if(p == paret::NORD){	//Mejor esto que p == 0
-		//if(_n == 1) cout<<"La puerta ya está abierta."  //No sé si hace falta
+	if(p == paret::NORD){
+		//if(_n == 1) cout<<"La puerta ya está abierta."
 		_n = true;
 	}else if(p == paret::EST){
     _e = true;
