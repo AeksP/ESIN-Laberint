@@ -1,11 +1,14 @@
 struct node_hash{
     int _k; //Clau
     node_hash* _seg;
-    node_hash* _delegado;
+    node_hash* _delegat;
+    bool _rep;      //Para saber si eres el delegado
+    nat _hijos;     //Para saber los hijos
 };
 node_hash** _taula; // taula amb punters a les llistes
 nat _M; // mida de la taula
 nat _quants;    // nº d'elements guardats al diccionari
+nat _ngrups;     //nº de grups
 
 static long const MULT = 31415926;
 

@@ -1,17 +1,23 @@
-OPCIONS = -D_GLIBCXX_DEBUG -Wall -Wno-deprecated -Wextra -Werror -std=c++11
+OPCIONS = -Wall -Werror -Wextra -Wno-implicit-fallthrough -ansi
 
-main: main.o cambra.o laberint.o
-	g++ -o main main.o cambra.o laberint.o -lesin
+driver_maze: driver_maze.o cambra.o laberint.o teseus.o dedalus.o
+	g++ -o driver_maze driver_maze.o cambra.o laberint.o teseus.o dedalus.o -lesin
 	rm *.o
 
-main.o: main.cpp
-	g++ -c main.cpp $(OPCIONS)
+driver_maze.o: driver_maze.cpp
+	g++ -c driver_maze.cpp $(OPCIONS)
 
 cambra.o: cambra.cpp
 	g++ -c cambra.cpp $(OPCIONS)
 
 laberint.o: laberint.cpp
 	g++ -c laberint.cpp $(OPCIONS)
+
+teseus.o: teseus.cpp
+	g++ -c teseus.cpp $(OPCIONS)
+
+dedalus.o: dedalus.cpp
+	g++ -c dedalus.cpp $(OPCIONS)
 
 clean:
 	rm *.o

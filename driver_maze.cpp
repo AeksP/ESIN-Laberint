@@ -33,11 +33,13 @@ namespace check {
                               int suma = ini.first + final.first;
                               int colum = L.num_columnes();
                               int testdddd = camino_candidato.front().first;
+                              cout<<suma<<colum<<testdddd<<"ignorar esto"<<endl;
                              return true;
                            }
 
 bool check::comprova_perfecte(const laberint& L){
   int dsdadad = L.num_columnes();
+  cout<<dsdadad<<"ignorar esto"<<endl;
   return true;
 }
 

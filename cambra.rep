@@ -1,4 +1,4 @@
-bool _n = false;
-bool _e = false;
-bool _s = false;
-bool _o = false;
+bool _n;
+bool _e;
+bool _s;
+bool _o;

@@ -21,6 +21,7 @@ istream & operator>>(std::istream & is, laberint & l) {
 int main(){
 	laberint l(cin);
 	cout<<l;
+  
 }
 
 /*
