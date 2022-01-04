@@ -72,8 +72,8 @@ laberint::laberint(const laberint & l) throw(error){
 		_puntero[i] = new cambra[_columna];
 	}
 
-	for(nat i = 0; i < l._fila; ++i){
-		for(nat j = 0; j < l._columna; ++j){
+	for(nat i = 0; i < _fila; ++i){
+		for(nat j = 0; j < _columna; ++j){
 			_puntero[i][j] = l._puntero[i][j];
 		}
 	}
@@ -85,14 +85,18 @@ laberint& laberint::operator=(const laberint & l) throw(error){
 			_puntero = laux._puntero;
 			laux._puntero = paux;	//Se borra el _puntero original
 			
+			int aux = _fila;
 			_fila = laux._fila;
+			laux._fila = aux;
+			aux = _columna;
 			_columna = laux._columna;
+			laux._columna = aux;
 			//cout<<"a"<<endl;
 		}
 		return *this;
 }
 laberint::~laberint() throw(){
-	if(_puntero != NULL){	//Por si acaso?
+	if(_puntero != NULL){
 		for(nat i = 0; i < _fila; ++i){
 			delete [] _puntero[i];
 		}
