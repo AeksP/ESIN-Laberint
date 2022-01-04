@@ -1,4 +1,4 @@
-OPCIONS = -Wall -Werror -Wextra -Wno-implicit-fallthrough -ansi
+OPCIONS = -g -O0 -Wall -Wextra -Werror -Wno-implicit-fallthrough -ansi
 
 driver_maze: driver_maze.o cambra.o laberint.o teseus.o dedalus.o
 	g++ -o driver_maze driver_maze.o cambra.o laberint.o teseus.o dedalus.o -lesin

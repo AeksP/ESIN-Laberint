@@ -28,13 +28,12 @@ bool cambra::porta_oberta(paret p) const throw(){
 	if(p == paret::NORD)	return _n;
 	else if(p == paret::EST)	return _e;
 	else if(p == paret::SUD)	return _s;
-	else return _o; //
-	//si p == paret::NO_DIR?
+	else if(p == paret::OEST) return _o; //
+	else return false; //si p == paret::NO_DIR?
 }
 
 void cambra::obre_porta(paret p) throw(error){
 	if(p == paret::NORD){
-		//if(_n == 1) cout<<"La puerta ya está abierta."
 		_n = true;
 	}else if(p == paret::EST){
     _e = true;
@@ -42,7 +41,7 @@ void cambra::obre_porta(paret p) throw(error){
     _s = true;
   }else if(p == paret::OEST){
     _o = true;
-  }
+  }else throw error(ParetInexistent);
 }
 
 void cambra::tanca_porta(paret p) throw(error){
@@ -54,7 +53,7 @@ void cambra::tanca_porta(paret p) throw(error){
     _s = false;
   }else if(p == paret::OEST){
     _o = false;
-  }  
+  }else throw error(ParetInexistent);
 }
 
 bool cambra::operator==(const cambra & c) const throw(){
@@ -68,9 +67,13 @@ bool cambra::operator!=(const cambra & c) const throw(){
 bool cambra::operator<(const cambra & c) const throw(){
   if((_n + _e + _s + _o) == (c._n + c._e + c._s + c._o)){
     if(_n < c._n)  return true;
-    else if(_e < c._e)  return true;
-    else if(_s < c._s)  return true;
-    else return true; //
+    else return false;
+    if(_e < c._e)  return true;
+    else return false;
+    if(_s < c._s)  return true;
+    else return false;
+    if(_o < c._o) return true;
+    else return false;
   }
   else if((_n + _e + _s + _o) < (c._n + c._e + c._s + c._o)) return true;
   else return false;

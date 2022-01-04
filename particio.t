@@ -8,8 +8,7 @@ long particio<T>::h(int k){
 }
 template <typename T>
 void particio<T>::esborra_nodes(node_hash *p){
-    //std::cout<<"borra"<<std::endl;
-    //cambiar ex jutge examen
+
     if(p != NULL){
         esborra_nodes(p->_seg);
         delete p;
@@ -27,30 +26,43 @@ particio<T>::particio(nat n) throw(error){
 
 template <typename T>
 particio<T>::particio(const particio & p) throw(error){
+    
     _quants = p._quants;
     _ngrups = p._ngrups;
     _M = p._M;
     _taula = new node_hash*[_M];
     for(nat i = 0; i < _M; ++i){
-        //_taula[i] = p._taula[i];
         node_hash* Q = p._taula[i];
+        node_hash* n = new node_hash;
         while(Q != NULL){
-            node_hash* P = new node_hash;
-            P->_k = Q->_k;
-                                    P->_seg = Q->_seg;
-                                    P->_delegat = Q->_delegat;
-            P->_rep = Q->_rep;
-            P->_hijos = Q->_hijos;
+            n->_k = Q->_k;
+            n->_rep = Q->_rep;
+            n->_hijos = Q->_hijos;
+            if(Q->_seg != NULL){
+                node_hash* nn = new node_hash;
+                n->_seg = nn;
+                n = n->_seg;
+            }else n->_seg = NULL;
 
             Q = Q->_seg;
         }
     }
-
-    //otro for para delegados
-    //int D = hash(Q->_delegat->_k)
-    //int V = Q->_delegat->_k
-    //_taula[D] tienes la "V"
-    //buscas la "V" y "P->_delegado = V"
+    //Asignar delegados
+    for(nat i = 0; i <_M; ++i){
+        node_hash* Q = p._taula[i];
+        node_hash* P = _taula[i];
+        while(Q != NULL){
+            int index = h(Q->_delegat->_k);
+            int clauD = Q->_delegat->_k;
+            node_hash* bd = _taula[index];  //bd está en la fila del delegado de P
+            while(bd != NULL or bd->_delegat->_k != clauD ){    //(bd nunca debería de ser NULL)
+                bd = bd->_seg;
+            }
+            //Ya tienes el delegado en bd y lo asignas
+            P->_delegat = bd;
+            Q = Q->_seg;
+        }
+    }
 
 }
 
@@ -133,17 +145,18 @@ void particio<T>::unir(const T & x, const T & y) throw(error){
         }
     }
     if(trobat and trobat2){
+        if(not p->_rep){    //No hace falta?
+            while(p != NULL and not p->_rep){
+                p = p->_delegat;
+            }
+        }
+        if(not q->_rep){
+            while(q != NULL and not q->_rep){
+                q = q->_delegat;
+            }
+        }
         if(p->_delegat != q->_delegat){ //Hacemos quickunion
-            if(not p->_rep){    //No hace falta?
-                while(p != NULL and not p->_rep){
-                    p = p->_delegat;
-                }
-            }
-            if(not q->_rep){
-                while(q != NULL and not q->_rep){
-                    q = q->_delegat;
-                }
-            }
+            
 
             if(p->_hijos < q->_hijos){  //unes P a Q
                 p->_delegat = q;    //tu delegado es q

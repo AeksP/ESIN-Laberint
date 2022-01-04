@@ -4,12 +4,15 @@
 using namespace std;
 
 laberint::laberint(nat num_fil, nat num_col) throw(error){
-	_puntero = new cambra*[num_fil];	//Array de cambras
-	for(nat i = 0; i < num_fil; ++i){	//Matriz de cambras
-		_puntero[i] = new cambra[num_col];
+	if(num_fil == 0 or num_col == 0) throw error(FilsColsIncorrecte);
+	else{
+		_puntero = new cambra*[num_fil];	//Array de cambras
+		for(nat i = 0; i < num_fil; ++i){	//Matriz de cambras
+			_puntero[i] = new cambra[num_col];
+		}
+		_fila = num_fil;
+		_columna = num_col;
 	}
-	_fila = num_fil;
-	_columna = num_col;
 }
 
 laberint::laberint(std::istream & is) throw(error){
@@ -30,10 +33,10 @@ laberint::laberint(std::istream & is) throw(error){
 	string s;
 	int contx = 0, conty = 0;
 	getline(is,s);	//Hay que dejarlo, es el salto de linea de los numeros
-	cout<<"test"<<s<<endl;
+	//cout<<"test"<<s<<endl;
 	for( nat i = 0; i < (_fila*2); ++i){
 		getline(is,s);
-		cout<<"testdentro"<<s<<endl;
+		//cout<<"testdentro"<<s<<endl;
 		if(i != 0){	//No hace nada pq es la pared
 			conty = 0;
 			for( nat j = 0; j < (_columna*2)+1; ++j ){	//j = 1
@@ -81,9 +84,10 @@ laberint& laberint::operator=(const laberint & l) throw(error){
 			cambra **paux = _puntero;
 			_puntero = laux._puntero;
 			laux._puntero = paux;	//Se borra el _puntero original
-
+			
 			_fila = laux._fila;
 			_columna = laux._columna;
+			//cout<<"a"<<endl;
 		}
 		return *this;
 }
@@ -92,7 +96,9 @@ laberint::~laberint() throw(){
 		for(nat i = 0; i < _fila; ++i){
 			delete [] _puntero[i];
 		}
-		delete [] _puntero;
+		
+		//cout<<"b"<<endl;
+		//delete _puntero;
 	}
 }
 
@@ -201,6 +207,7 @@ void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
 }
 
 void laberint::print(std::ostream & os) const throw(){
+	os<<_fila<<" "<<_columna<<endl;
 	string s = "";
 	string pared = "";
 	for(nat i = 0; i < (_columna*2) +1; ++i){
