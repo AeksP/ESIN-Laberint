@@ -43,7 +43,7 @@ laberint::laberint(std::istream & is) throw(error){
 				if(i%2 != 0){	// AHORA IMPAR, miro este/oeste
 					if(j%2 == 0 and j != 0 and (j != (_columna*2)) ){	//Si no es paret oeste ni es cambra ni es paret este
 						if(s[j] == ' '){
-							obre_porta(paret::EST,posicio(contx,conty));	//Abro este y oeste
+							obre_porta(paret::EST,posicio(contx+1, conty+1));	//Abro este y oeste
 						}
 						++conty;
 					}
@@ -51,7 +51,7 @@ laberint::laberint(std::istream & is) throw(error){
 				else{	// AHORA PAR
 					if( j%2 != 0){	//Estamos en paret sud/norte
 						if(s[j] == ' '){
-							obre_porta(paret::SUD,posicio(contx,conty));	//Abro sud y norte
+							obre_porta(paret::SUD,posicio(contx+1, conty+1));	//Abro sud y norte
 						}
 						++conty;
 					}
@@ -114,98 +114,106 @@ nat laberint::num_columnes() const throw(){
 }
 
 cambra laberint::operator()(const posicio & pos) const throw(error){
-	if(pos.first >= _fila and pos.second >= _columna){
-		cout<<"Error, posició no inclosa al laberint"<<endl;
+	/*if(pos.first >= _fila and pos.second >= _columna){
+		//cout<<"Error, posició no inclosa al laberint"<<endl;
 		throw error(laberint::PosicioInexistent);
-	}else return _puntero[pos.first][pos.second];
+	}else return _puntero[pos.first][pos.second];*/
+
+	if(0 < pos.first and pos.first <= _fila and 0 < pos.second and pos.second <= _columna){
+		return _puntero[pos.first-1][pos.second-1];
+	}else throw error(laberint::PosicioInexistent);
 }
 
 void laberint::obre_porta(paret p, const posicio & pos) throw(error){
-	if(pos.first < _fila and pos.second < _columna){
+	if(0 < pos.first and pos.first <= _fila and 0 < pos.second and pos.second <= _columna){
 		if(p == paret::NORD){
-			if(pos.first == 0){
-				cout<<"ERROR, exterior norte"<<endl;
+			if(pos.first == 0+1){
+				//cout<<"ERROR, exterior norte"<<endl;
 				throw error(PortaExterior);
 			}
 			else{
-				_puntero[pos.first][pos.second].obre_porta(p);	//Abro norte
-				_puntero[pos.first-1][pos.second].obre_porta(paret::SUD);	//Abro sud de arriba
+				_puntero[pos.first-1][pos.second-1].obre_porta(p);	//Abro norte
+				_puntero[pos.first-1-1][pos.second-1].obre_porta(paret::SUD);	//Abro sud de arriba
 			}
 		}else if(p == paret::EST){
-			if(pos.second == _columna-1){
-				cout<<"ERROR, exterior este"<<endl;
+			if(pos.second == _columna-1+1){
+				//cout<<"ERROR, exterior este"<<endl;
 				throw error(PortaExterior);
 			}
 			else{
-				_puntero[pos.first][pos.second].obre_porta(p);	//Abro este
-				_puntero[pos.first][pos.second+1].obre_porta(paret::OEST);	//Abro oest de derecha
+				_puntero[pos.first-1][pos.second-1].obre_porta(p);	//Abro este
+				_puntero[pos.first-1][pos.second+1-1].obre_porta(paret::OEST);	//Abro oest de derecha
 			}
 		}else if(p == paret::SUD){
-			if(pos.first == _fila-1){
-				cout<<"ERROR, exterior sud"<<endl;
+			if(pos.first == _fila-1+1){
+				//cout<<"ERROR, exterior sud"<<endl;
 				throw error(PortaExterior);
 			}
 			else{
-				_puntero[pos.first][pos.second].obre_porta(p); //Abro sud
-				_puntero[pos.first+1][pos.second].obre_porta(paret::NORD);	//Abro norte de abajo
+				_puntero[pos.first-1][pos.second-1].obre_porta(p); //Abro sud
+				_puntero[pos.first+1-1][pos.second-1].obre_porta(paret::NORD);	//Abro norte de abajo
 			}
 		}else if(p == paret::OEST){	//p == paret::OEST
-			if(pos.second == 0){
-				cout<<"ERROR, exterior oest"<<endl;
+			if(pos.second == 0+1){
+				//cout<<"ERROR, exterior oest"<<endl;
 				throw error(PortaExterior);
 			}
 			else{
-				_puntero[pos.first][pos.second].obre_porta(p);
-				_puntero[pos.first][pos.second-1].obre_porta(paret::EST);
+				_puntero[pos.first-1][pos.second-1].obre_porta(p);
+				_puntero[pos.first-1][pos.second-1-1].obre_porta(paret::EST);
 			}
+		}else{
+			throw error(cambra::ParetInexistent);
 		}
 	}else{
-		cout<<"Error mida"<<endl;
+		//cout<<"Error mida"<<endl;
 		throw error(laberint::PosicioInexistent);
 	}
 }
 
 void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
-	if(pos.first < _fila and pos.second < _columna){
+	if(0 < pos.first and pos.first <= _fila and 0 < pos.second and pos.second <= _columna){
 		if(p == paret::NORD){
-			if(pos.first == 0){
-				cout<<"ERROR, exterior norte (cerrar)"<<endl;
-				throw error(PortaExterior);
+			if(pos.first == 0+1){
+				//cout<<"ERROR, exterior norte (cerrar)"<<endl;
+				//throw error(PortaExterior);
 			}
 			else{
-				_puntero[pos.first][pos.second].tanca_porta(p);	//Cierro norte
-				_puntero[pos.first-1][pos.second].tanca_porta(paret::SUD);	//Cierro sud de arriba
+				_puntero[pos.first-1][pos.second-1].tanca_porta(p);	//Cierro norte
+				_puntero[pos.first-1-1][pos.second-1].tanca_porta(paret::SUD);	//Cierro sud de arriba
 			}
 		}else if(p == paret::EST){
-			if(pos.second == _columna-1){
-				cout<<"ERROR, exterior este (cerrar)"<<endl;
-				throw error(PortaExterior);
+			if(pos.second == _columna-1+1){
+				//cout<<"ERROR, exterior este (cerrar)"<<endl;
+				//throw error(PortaExterior);
 			}
 			else{
-				_puntero[pos.first][pos.second].tanca_porta(p);	//Cierro este
-				_puntero[pos.first][pos.second+1].tanca_porta(paret::OEST);	//Cierro oest de derecha
+				_puntero[pos.first-1][pos.second-1].tanca_porta(p);	//Cierro este
+				_puntero[pos.first-1][pos.second+1-1].tanca_porta(paret::OEST);	//Cierro oest de derecha
 			}
 		}else if(p == paret::SUD){
-			if(pos.first == _fila-1){
-				cout<<"ERROR, exterior sud (cerrar)"<<endl;
-				throw error(PortaExterior);
+			if(pos.first == _fila-1+1){
+				//cout<<"ERROR, exterior sud (cerrar)"<<endl;
+				//throw error(PortaExterior);
 			}
 			else{
-				_puntero[pos.first][pos.second].tanca_porta(p); //Cierro sud
-				_puntero[pos.first+1][pos.second].tanca_porta(paret::NORD);	//Cierro norte de abajo
+				_puntero[pos.first-1][pos.second-1].tanca_porta(p); //Cierro sud
+				_puntero[pos.first+1-1][pos.second-1].tanca_porta(paret::NORD);	//Cierro norte de abajo
 			}
 		}else if(p == paret::OEST){	//p == paret::OEST
-			if(pos.second == 0){
-				cout<<"ERROR, exterior oest (cerrar)"<<endl;
-				throw error(PortaExterior);
+			if(pos.second == 0+1){
+				//cout<<"ERROR, exterior oest (cerrar)"<<endl;
+				//throw error(PortaExterior);
 			}
 			else{
-				_puntero[pos.first][pos.second].tanca_porta(p);
-				_puntero[pos.first][pos.second-1].tanca_porta(paret::EST);
+				_puntero[pos.first-1][pos.second-1].tanca_porta(p);
+				_puntero[pos.first-1][pos.second-1-1].tanca_porta(paret::EST);
 			}
+		}else{
+			throw error(cambra::ParetInexistent);
 		}
 	}else{
-		cout<<"Error mida (cerrar)"<<endl;
+		//cout<<"Error mida (cerrar)"<<endl;
 		throw error(laberint::PosicioInexistent);
 	}
 }

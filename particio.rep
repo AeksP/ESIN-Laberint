@@ -6,7 +6,7 @@ struct node_hash{
     nat _hijos;     //Para saber los hijos
 };
 node_hash** _taula; // taula amb punters a les llistes
-nat _M; // mida de la taula
+float _M; // mida de la taula
 nat _quants;    // nº d'elements guardats al diccionari
 nat _ngrups;     //nº de grups
 
