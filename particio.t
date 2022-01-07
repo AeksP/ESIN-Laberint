@@ -125,6 +125,7 @@ particio<T>::~particio() throw(){
     for(nat i = 0; i < M; ++i){
        esborra_nodes(_taula[i]); 
     }
+    delete [] _taula;
     //std::cout<<"destru"<<std::endl;
 }
 

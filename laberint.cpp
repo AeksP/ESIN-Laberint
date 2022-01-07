@@ -102,7 +102,7 @@ laberint::~laberint() throw(){
 		}
 		
 		//cout<<"b"<<endl;
-		//delete _puntero;
+		delete [] _puntero; //probar
 	}
 }
 
