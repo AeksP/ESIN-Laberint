@@ -27,13 +27,10 @@
     return(i >= 0 and i < (filas*2)-1 and j >= 0 and j < (columnas*2)-1 and matr[i][j] == 1 and not visitado[i][j]);
   }
 
-  void encontrarCamino(bool** matr, bool** visitado, int i, int j, int x, int y, std::list<posicio> & L_min, std::list<posicio> & L, int filas, int columnas){
+  void encontrarCamino(bool** matr, bool** visitado, int i, int j, int x, int y, std::list<posicio> & L, int filas, int columnas){
     if( i == x and j == y){
       posicio pos(i,j);
       L.push_back(pos);
-      if(L_min.size() > L.size()){
-        L_min = L;
-      }else L_min = L;
       return;
     }
 
@@ -43,28 +40,28 @@
       //std::cout<<"entro sud"<<std::endl;
       posicio pos(i,j);
       L.push_back(pos);
-      encontrarCamino(matr, visitado, i+1, j, x, y, L_min, L, filas, columnas);
+      encontrarCamino(matr, visitado, i+1, j, x, y, L, filas, columnas);
     }
     //E
     if(caminable(matr, visitado, i, j+1, filas, columnas)){
       //std::cout<<"entro este"<<std::endl;
       posicio pos(i,j);
       L.push_back(pos);
-      encontrarCamino(matr, visitado, i, j+1, x, y, L_min, L, filas, columnas);
+      encontrarCamino(matr, visitado, i, j+1, x, y, L, filas, columnas);
     }
     //N
     if(caminable(matr, visitado, i-1, j, filas, columnas)){
       //std::cout<<"entro sunort"<<std::endl;
       posicio pos(i,j);
       L.push_back(pos);
-      encontrarCamino(matr, visitado, i-1, j, x, y, L_min, L, filas, columnas);
+      encontrarCamino(matr, visitado, i-1, j, x, y, L, filas, columnas);
     }
     //O
     if(caminable(matr, visitado, i, j-1, filas, columnas)){
       //std::cout<<"entro oest"<<std::endl;
       posicio pos(i,j);
       L.push_back(pos);
-      encontrarCamino(matr, visitado, i, j-1, x, y, L_min, L, filas, columnas);
+      encontrarCamino(matr, visitado, i, j-1, x, y, L, filas, columnas);
     }
 
   visitado[i][j] = false;
@@ -135,10 +132,9 @@
       }
     }
     
-    std::list<posicio> vacia;
     //std::cout<<"IMF: "<<inicimatriu.first<<"IMS: "<<inicimatriu.second<<std::endl;
     //std::cout<<"FMF: "<<finalmatriu.first<<"FMS: "<<finalmatriu.second<<std::endl;
-    encontrarCamino(matriu, visitado, inicimatriu.first-1, inicimatriu.second-1, finalmatriu.first-1, finalmatriu.second-1, L, vacia, filas, columnas);
+    encontrarCamino(matriu, visitado, inicimatriu.first-1, inicimatriu.second-1, finalmatriu.first-1, finalmatriu.second-1, L, filas, columnas);
 
     std::list<posicio> RESULTAT;
     filresta = 0;
