@@ -3,7 +3,6 @@
   void MATHLAB(const laberint & M, bool** matr, int i, int j, int filresta, int resta){
     posicio pos(i,j);
     cambra c = M(pos);
-    //std::cout<<"hola"<<c.porta_oberta(paret::NORD)<<std::endl;
     if(c.porta_oberta(paret::NORD)){
       matr[pos.first-1+filresta][pos.second-1+resta] = c.porta_oberta(paret::NORD);
       matr[pos.first-2+filresta][pos.second-1+resta] = c.porta_oberta(paret::NORD);
@@ -23,7 +22,6 @@
   }
 
   bool caminable(bool** matr, bool** visitado, int i, int j, int filas, int columnas){
-    //std::cout<<"buenas: "<<i <<"-"<<j<<std::endl;
     return(i >= 0 and i < (filas*2)-1 and j >= 0 and j < (columnas*2)-1 and matr[i][j] == 1 and not visitado[i][j]);
   }
 
@@ -37,28 +35,24 @@
     visitado[i][j] = true;
     //SUD
     if(caminable(matr, visitado, i+1, j, filas, columnas)){
-      //std::cout<<"entro sud"<<std::endl;
       posicio pos(i,j);
       L.push_back(pos);
       encontrarCamino(matr, visitado, i+1, j, x, y, L, filas, columnas);
     }
     //E
     if(caminable(matr, visitado, i, j+1, filas, columnas)){
-      //std::cout<<"entro este"<<std::endl;
       posicio pos(i,j);
       L.push_back(pos);
       encontrarCamino(matr, visitado, i, j+1, x, y, L, filas, columnas);
     }
     //N
     if(caminable(matr, visitado, i-1, j, filas, columnas)){
-      //std::cout<<"entro sunort"<<std::endl;
       posicio pos(i,j);
       L.push_back(pos);
       encontrarCamino(matr, visitado, i-1, j, x, y, L, filas, columnas);
     }
     //O
     if(caminable(matr, visitado, i, j-1, filas, columnas)){
-      //std::cout<<"entro oest"<<std::endl;
       posicio pos(i,j);
       L.push_back(pos);
       encontrarCamino(matr, visitado, i, j-1, x, y, L, filas, columnas);
@@ -113,14 +107,7 @@
       }
     //####################################################################
 
-    //std::cout<<"Matriz"<<std::endl; 
-    for(nat i = 1; i <= (filas*2)-1; ++i){
-      for(nat j = 1; j <= (columnas*2)-1; ++j){
-        //std::cout<<matriu[i-1][j-1]<<" ";
-      }
-      //std::cout<<std::endl;
-    }
-    //std::cout<<"Holaaa:"<<sizeof(matriu)<<"D: "<<sizeof(matriu[0][0])<<"DD: "<<sizeof(matriu)/sizeof(matriu[0][0])<<std::endl;
+
     bool** visitado;
     visitado = new bool*[(filas*2)-1];	//Array de cambras
     for(nat i = 0; i < (filas*2)-1; ++i){	//Matriz de cambras
@@ -132,8 +119,6 @@
       }
     }
     
-    //std::cout<<"IMF: "<<inicimatriu.first<<"IMS: "<<inicimatriu.second<<std::endl;
-    //std::cout<<"FMF: "<<finalmatriu.first<<"FMS: "<<finalmatriu.second<<std::endl;
     encontrarCamino(matriu, visitado, inicimatriu.first-1, inicimatriu.second-1, finalmatriu.first-1, finalmatriu.second-1, L, filas, columnas);
 
     std::list<posicio> RESULTAT;
@@ -142,9 +127,8 @@
         int resta = 0;
         for(nat j = 1; j <= (columnas*2)-1; ++j){
           
-            if( (i%2 != 0 /*and i == L.front().first*/) and (j%2 != 0 /*and j == L.front().second*/)) {
+            if( (i%2 != 0) and (j%2 != 0)) {
               if(i == L.front().first+1 and j == L.front().second+1){
-                //std::cout<<"RUST: "<<L.front().first<<" - "<<L.front().second<<std::endl;
                 posicio POS = L.front();
                 L.pop_front();
                 if(L.size() > 0) L.pop_front();
