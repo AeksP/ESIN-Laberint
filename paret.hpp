@@ -7,7 +7,7 @@
 class paret {
 public:
   enum {NORD, EST, SUD, OEST, NO_DIR};
-//	  0	1    2	   3	  4
+//	      0	   1    2	   3	   4
   paret(int p = NO_DIR) throw() : _p(p) {}
 
   paret(const std::string& s) throw() {
