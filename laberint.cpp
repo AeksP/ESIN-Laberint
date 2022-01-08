@@ -33,10 +33,8 @@ laberint::laberint(std::istream & is) throw(error){
 	string s;
 	int contx = 0, conty = 0;
 	getline(is,s);	//Hay que dejarlo, es el salto de linea de los numeros
-	//cout<<"test"<<s<<endl;
 	for( nat i = 0; i < (_fila*2); ++i){
 		getline(is,s);
-		//cout<<"testdentro"<<s<<endl;
 		if(i != 0){	//No hace nada pq es la pared
 			conty = 0;
 			for( nat j = 0; j < (_columna*2)+1; ++j ){	//j = 1
@@ -60,7 +58,6 @@ laberint::laberint(std::istream & is) throw(error){
 			if( i%2 == 0)	contx++;
 		}
 	}
-	//cout<<"he acabado"<<endl;
 }
 
 laberint::laberint(const laberint & l) throw(error){
@@ -91,7 +88,6 @@ laberint& laberint::operator=(const laberint & l) throw(error){
 			aux = _columna;
 			_columna = laux._columna;
 			laux._columna = aux;
-			//cout<<"a"<<endl;
 		}
 		return *this;
 }
@@ -100,9 +96,7 @@ laberint::~laberint() throw(){
 		for(nat i = 0; i < _fila; ++i){
 			delete [] _puntero[i];
 		}
-		
-		//cout<<"b"<<endl;
-		delete [] _puntero; //probar
+		delete [] _puntero;
 	}
 }
 
@@ -114,11 +108,6 @@ nat laberint::num_columnes() const throw(){
 }
 
 cambra laberint::operator()(const posicio & pos) const throw(error){
-	/*if(pos.first >= _fila and pos.second >= _columna){
-		//cout<<"Error, posició no inclosa al laberint"<<endl;
-		throw error(laberint::PosicioInexistent);
-	}else return _puntero[pos.first][pos.second];*/
-
 	if(0 < pos.first and pos.first <= _fila and 0 < pos.second and pos.second <= _columna){
 		return _puntero[pos.first-1][pos.second-1];
 	}else throw error(laberint::PosicioInexistent);
@@ -128,7 +117,6 @@ void laberint::obre_porta(paret p, const posicio & pos) throw(error){
 	if(0 < pos.first and pos.first <= _fila and 0 < pos.second and pos.second <= _columna){
 		if(p == paret::NORD){
 			if(pos.first == 0+1){
-				//cout<<"ERROR, exterior norte"<<endl;
 				throw error(PortaExterior);
 			}
 			else{
@@ -137,7 +125,6 @@ void laberint::obre_porta(paret p, const posicio & pos) throw(error){
 			}
 		}else if(p == paret::EST){
 			if(pos.second == _columna-1+1){
-				//cout<<"ERROR, exterior este"<<endl;
 				throw error(PortaExterior);
 			}
 			else{
@@ -146,7 +133,6 @@ void laberint::obre_porta(paret p, const posicio & pos) throw(error){
 			}
 		}else if(p == paret::SUD){
 			if(pos.first == _fila-1+1){
-				//cout<<"ERROR, exterior sud"<<endl;
 				throw error(PortaExterior);
 			}
 			else{
@@ -155,7 +141,6 @@ void laberint::obre_porta(paret p, const posicio & pos) throw(error){
 			}
 		}else if(p == paret::OEST){	//p == paret::OEST
 			if(pos.second == 0+1){
-				//cout<<"ERROR, exterior oest"<<endl;
 				throw error(PortaExterior);
 			}
 			else{
@@ -166,7 +151,6 @@ void laberint::obre_porta(paret p, const posicio & pos) throw(error){
 			throw error(cambra::ParetInexistent);
 		}
 	}else{
-		//cout<<"Error mida"<<endl;
 		throw error(laberint::PosicioInexistent);
 	}
 }
@@ -175,8 +159,7 @@ void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
 	if(0 < pos.first and pos.first <= _fila and 0 < pos.second and pos.second <= _columna){
 		if(p == paret::NORD){
 			if(pos.first == 0+1){
-				//cout<<"ERROR, exterior norte (cerrar)"<<endl;
-				//throw error(PortaExterior);
+
 			}
 			else{
 				_puntero[pos.first-1][pos.second-1].tanca_porta(p);	//Cierro norte
@@ -184,8 +167,7 @@ void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
 			}
 		}else if(p == paret::EST){
 			if(pos.second == _columna-1+1){
-				//cout<<"ERROR, exterior este (cerrar)"<<endl;
-				//throw error(PortaExterior);
+
 			}
 			else{
 				_puntero[pos.first-1][pos.second-1].tanca_porta(p);	//Cierro este
@@ -193,8 +175,7 @@ void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
 			}
 		}else if(p == paret::SUD){
 			if(pos.first == _fila-1+1){
-				//cout<<"ERROR, exterior sud (cerrar)"<<endl;
-				//throw error(PortaExterior);
+
 			}
 			else{
 				_puntero[pos.first-1][pos.second-1].tanca_porta(p); //Cierro sud
@@ -202,8 +183,7 @@ void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
 			}
 		}else if(p == paret::OEST){	//p == paret::OEST
 			if(pos.second == 0+1){
-				//cout<<"ERROR, exterior oest (cerrar)"<<endl;
-				//throw error(PortaExterior);
+
 			}
 			else{
 				_puntero[pos.first-1][pos.second-1].tanca_porta(p);
@@ -213,7 +193,6 @@ void laberint::tanca_porta(paret p, const posicio & pos) throw(error){
 			throw error(cambra::ParetInexistent);
 		}
 	}else{
-		//cout<<"Error mida (cerrar)"<<endl;
 		throw error(laberint::PosicioInexistent);
 	}
 }
